@@ -2,6 +2,7 @@
 
 #include "GameJamGameMode.h"
 #include "GameJamCharacter.h"
+#include "Managers/ResourceManager.h"
 #include "UObject/ConstructorHelpers.h"
 
 AGameJamGameMode::AGameJamGameMode()
@@ -10,5 +11,15 @@ AGameJamGameMode::AGameJamGameMode()
 	// set default pawn class to our Blueprinted character
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnClassFinder(TEXT("/Game/FirstPerson/Blueprints/BP_FirstPersonCharacter"));
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
+}
 
+void AGameJamGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	PoolManager = NewObject<UPoolManager>(this);
+	ResourceManager = NewObject<UResourceManager>(this);
+
+	PoolManager->Init(this);
+	ResourceManager->Init(this);
+	
 }

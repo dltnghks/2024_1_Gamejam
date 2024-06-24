@@ -43,7 +43,7 @@ class AGameJamCharacter : public ACharacter
 	class UInputAction* SkillAction;
 	
 	UPROPERTY(EditAnywhere, Category=ShockWave)
-	TSubclassOf<class AShockWaveNiagaraActor> BP_ShockWave; 
+	TSubclassOf<class AShockWave> BP_ShockWave; 
 
 	UPROPERTY(EditAnywhere, Category=ShockWave)
 	float ShockWaveCoolDown;

@@ -3,7 +3,7 @@
 
 #include "PoolManager.h"
 
-void UPoolManager::CreatePool(TSubclassOf<UObject> original, int count)
+void UPoolManager::CreatePool(TSubclassOf<AActor> original, int count)
 {
 	UObjPool* pool = NewObject<UObjPool>(this, UObjPool::StaticClass());
 	pool->Init(original, count);
@@ -21,7 +21,7 @@ void UPoolManager::Push(UPoolable* poolable)
 	_pool[name]->Push(poolable);
 }
 
-UPoolable* UPoolManager::Pop(TSubclassOf<UObject> original)
+UPoolable* UPoolManager::Pop(TSubclassOf<AActor> original)
 {
 	FString name = original->GetName();
 	if(_pool.Contains(name) == false)
@@ -31,7 +31,7 @@ UPoolable* UPoolManager::Pop(TSubclassOf<UObject> original)
 	return _pool[name]->Pop();
 }
 
-TSubclassOf<UObject> UPoolManager::GetOriginal(FString name)
+TSubclassOf<AActor> UPoolManager::GetOriginal(FString name)
 {
 	if (_pool.Contains(name) == false)
 	{

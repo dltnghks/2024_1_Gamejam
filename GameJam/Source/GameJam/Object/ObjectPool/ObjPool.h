@@ -19,12 +19,12 @@ class GAMEJAM_API UObjPool : public UObject
 
 public:
 	UPROPERTY()
-		TSubclassOf<UObject> Original;
+		TSubclassOf<AActor> Original;
 
 	UPROPERTY()
 		TArray<UPoolable*> _poolStack;
 	
-	void Init(TSubclassOf<UObject> original, int count = 5);
+	void Init(TSubclassOf<AActor> original, int count = 5);
 
 	void Push(UPoolable* poolable);
 

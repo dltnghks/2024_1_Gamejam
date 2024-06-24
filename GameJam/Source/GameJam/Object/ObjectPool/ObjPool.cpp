@@ -3,7 +3,7 @@
 
 #include "ObjPool.h"
 
-void UObjPool::Init(TSubclassOf<UObject> original, int count)
+void UObjPool::Init(TSubclassOf<AActor> original, int count)
 
 {
 	Original = original;

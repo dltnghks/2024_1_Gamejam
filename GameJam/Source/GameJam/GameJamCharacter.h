@@ -39,10 +39,24 @@ class AGameJamCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* MoveAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* SkillAction;
+	
+	UPROPERTY(EditAnywhere, Category=ShockWave)
+	TSubclassOf<class AShockWave> BP_ShockWave; 
+
+	UPROPERTY(EditAnywhere, Category=ShockWave)
+	float ShockWaveCoolDown;
+	
+	FRotator ShockWaveRot;
+	
 	bool bInWater = false;
 	bool bIsWalking = true;
 	bool bIsSwimming = false;
+	
 	float WaterZ;
+	float CurShockWaveCoolDown = 0;
+	
 public:
 	AGameJamCharacter();
 
@@ -75,6 +89,11 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
+	virtual void Jump() override;
+
+	virtual void StopJumping() override;
+
+	void Skill();
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;

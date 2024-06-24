@@ -11,7 +11,7 @@ class GAMEJAM_API ANonPlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 protected:
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly)
 	FVector _destination;
 	
 	UPROPERTY()

@@ -33,6 +33,9 @@ public:
 	class UParticleSystem* _destroyParticle;
 
 	UPROPERTY(EditAnywhere, Category = " Setting")
+	class USoundBase* _spawnSound;
+	
+	UPROPERTY(EditAnywhere, Category = " Setting")
 	class USoundBase* _destroySound;
 	
 	UPROPERTY()

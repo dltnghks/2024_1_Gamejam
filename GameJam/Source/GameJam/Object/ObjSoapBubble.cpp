@@ -48,7 +48,6 @@ void AObjSoapBubble:: Tick(float DeltaTime)
 	
 	_time += DeltaTime;
 
-	UE_LOG(LogTemp, Log, TEXT("%f / %f"), _time, _spawnTime);
 	if(_time >= _spawnTime)
 	{
 		SoapBubbleDestory();

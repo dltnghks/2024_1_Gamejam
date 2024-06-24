@@ -14,11 +14,11 @@ class GAMEJAM_API UAnimInstanceCharacter : public UAnimInstance
 {
 	GENERATED_BODY()
 protected:
-    UPROPERTY(BlueprintReadOnly, Category = Pawn, Meta = (AllowPrivateAccess = true))
-    float _speed;
+    UPROPERTY(BlueprintReadOnly, Category = "State", Meta = (AllowPrivateAccess = true))
+    float Speed;
 
     UPROPERTY(BlueprintReadOnly, Category = "State", Meta = (AllowPrivateAccess = true))
-    bool _bDeath = false;
+    bool IsDeath = false;
 
     UPROPERTY(EditAnywhere, Category = Pawn, Meta = (AllowPrivateAccess = true))
     UAnimMontage* _hitMontage;

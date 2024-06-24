@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "GameJam/GameJamGameMode.h"
 #include "ObjectPool/Poolable.h"
 #include "ObjSoapBubble.generated.h"
 
@@ -22,6 +23,15 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UPoolable* PoolableComponent;
 
+	UPROPERTY()
+	AGameJamGameMode* _gameMode;
+	
+	UPROPERTY()
+	float _spawnTime;
+
+	UPROPERTY()
+	float _time = 0.0f;
+	
 protected:
 
 	UPROPERTY()
@@ -33,7 +43,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
+	void Init(FVector destination, float moveSpeed = 100.0f, float spawnTime = 5.0f);
+	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

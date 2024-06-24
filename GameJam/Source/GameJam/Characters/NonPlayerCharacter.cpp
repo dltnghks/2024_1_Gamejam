@@ -51,7 +51,7 @@ void ANonPlayerCharacter::Tick(float DeltaTime)
 	{
 		float radius = _npcArea->SphereComponent->GetScaledSphereRadius();
 		UE_LOG(LogTemp, Log, TEXT("radius : %f"), radius);
-		if (_navSystem->GetRandomPointInNavigableRadius(_npcArea->GetActorLocation(), 400.0f, NextPatrol))
+		if (_navSystem->GetRandomPointInNavigableRadius(_npcArea->GetActorLocation(), radius, NextPatrol))
 		{
 			UAIBlueprintHelperLibrary::SimpleMoveToLocation(GetController(), NextPatrol);
 		}

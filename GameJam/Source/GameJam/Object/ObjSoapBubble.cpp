@@ -44,6 +44,7 @@ void AObjSoapBubble::Init(FVector start, FVector destination, float moveSpeed, f
 // Called every frame
 void AObjSoapBubble:: Tick(float DeltaTime)
 {
+	if(_init == false) return;
 	Super::Tick(DeltaTime);
 	
 	_time += DeltaTime;

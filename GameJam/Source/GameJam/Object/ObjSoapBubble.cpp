@@ -3,6 +3,7 @@
 
 #include "ObjSoapBubble.h"
 
+#include "Components/AudioComponent.h"
 #include "GameJam/GameJamGameMode.h"
 #include "GameJam/Managers/ResourceManager.h"
 #include "Kismet/GameplayStatics.h"
@@ -16,6 +17,8 @@ AObjSoapBubble::AObjSoapBubble()
 
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SphereMesh"));
 	PoolableComponent = CreateDefaultSubobject<UPoolable>(TEXT("Poolable"));
+	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
+	
 	SetRootComponent(MeshComponent);
 	
 }
@@ -29,6 +32,7 @@ void AObjSoapBubble::BeginPlay()
 
 void AObjSoapBubble::Init(FVector start, FVector destination, float moveSpeed, float spawnTime)
 {
+	_init = true;
 	SetActorLocation(start);
 	_destination = destination;
 	_moveSpeed = moveSpeed;
@@ -57,6 +61,13 @@ void AObjSoapBubble:: Tick(float DeltaTime)
 
 void AObjSoapBubble::SoapBubbleDestory()
 {
+	if(_init == false) return;
+	_init = false;
+	if(_destroySound)
+		UGameplayStatics::PlaySoundAtLocation(this, _destroySound, GetActorLocation(), FRotator::ZeroRotator, 1, 1, 0.3);
+
+	if(_destroyParticle)
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), _destroyParticle, GetActorLocation(), FRotator::ZeroRotator, true);
 	_gameMode->ResourceManager->ObjectDestory(this);
 }
 

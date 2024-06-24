@@ -23,8 +23,17 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UPoolable* PoolableComponent;
 
+	UPROPERTY(VisibleAnywhere)
+	class UAudioComponent* AudioComponent;
+	
 	UPROPERTY()
 	AGameJamGameMode* _gameMode;
+
+	UPROPERTY(EditAnywhere, Category = " Setting")
+	class UParticleSystem* _destroyParticle;
+
+	UPROPERTY(EditAnywhere, Category = " Setting")
+	class USoundBase* _destroySound;
 	
 	UPROPERTY()
 	float _spawnTime;
@@ -39,6 +48,9 @@ protected:
 
 	UPROPERTY()
 	float _moveSpeed = 100.0f;
+	
+	UPROPERTY()
+	bool _init = false;
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

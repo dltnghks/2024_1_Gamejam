@@ -1,0 +1,15 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "c:\\users\\leejo\\desktop\\2024_1_gamejam\\gamejam\\intermediate\\build\\win64\\unrealeditor\\inc\\gamejam\\uht\\gamejamplayercontroller.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "c:\\users\\leejo\\desktop\\2024_1_gamejam\\gamejam\\intermediate\\build\\win64\\x64\\gamejameditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.cpp20.h.pch",
+        "Includes": [
+            "c:\\users\\leejo\\desktop\\2024_1_gamejam\\gamejam\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\gamejam\\definitions.gamejam.h",
+            "c:\\users\\leejo\\desktop\\2024_1_gamejam\\gamejam\\source\\gamejam\\gamejamplayercontroller.h",
+            "c:\\users\\leejo\\desktop\\2024_1_gamejam\\gamejam\\intermediate\\build\\win64\\unrealeditor\\inc\\gamejam\\uht\\gamejamplayercontroller.generated.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

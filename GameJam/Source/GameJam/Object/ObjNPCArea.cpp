@@ -28,6 +28,7 @@ void AObjNPCArea::BeginPlay()
 			FActorSpawnParameters parameters;
 			parameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 			ANonPlayerCharacter* newCharacter = GetWorld()->SpawnActor<ANonPlayerCharacter>(characterClass,GetActorLocation(), FRotator::ZeroRotator, parameters);
+			newCharacter->Init();
 			UE_LOG(LogTemp, Log, TEXT("newCharacter Spanw"));
 			_npcList.Add(newCharacter);
 		}

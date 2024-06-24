@@ -25,6 +25,6 @@ void AGameJamGameMode::BeginPlay()
 
 	UE_LOG(LogTemp, Log, TEXT("GameMode BeginPlay"));
 	AObjSoapBubble* bubble = ResourceManager->Instantiate<AObjSoapBubble>(testClass);
-	bubble->SetActorLocation(FVector(2400.000000f,1360.000000f,315.062601f));
+	bubble->Init(FVector(2400.000000f,1360.000000f,315.062601f), FVector::Zero());
 	UE_LOG(LogTemp, Log, TEXT("%s 생성 완료"), *bubble->GetName());
 }

@@ -27,8 +27,9 @@ void AObjSoapBubble::BeginPlay()
 	_gameMode = Cast<AGameJamGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
-void AObjSoapBubble::Init(FVector destination, float moveSpeed, float spawnTime)
+void AObjSoapBubble::Init(FVector start, FVector destination, float moveSpeed, float spawnTime)
 {
+	SetActorLocation(start);
 	_destination = destination;
 	_moveSpeed = moveSpeed;
 	_spawnTime = spawnTime;
@@ -37,19 +38,25 @@ void AObjSoapBubble::Init(FVector destination, float moveSpeed, float spawnTime)
 
 
 // Called every frame
-void AObjSoapBubble::Tick(float DeltaTime)
+void AObjSoapBubble:: Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
 	_time += DeltaTime;
 
+	UE_LOG(LogTemp, Log, TEXT("%f / %f"), _time, _spawnTime);
 	if(_time >= _spawnTime)
 	{
-		_gameMode->ResourceManager->ObjectDestory(this);
+		SoapBubbleDestory();
 	}
 	
 	FVector NewLocation = FMath::VInterpConstantTo(GetActorLocation(), _destination, DeltaTime, _moveSpeed);
 	SetActorLocation(NewLocation);
 
+}
+
+void AObjSoapBubble::SoapBubbleDestory()
+{
+	_gameMode->ResourceManager->ObjectDestory(this);
 }
 

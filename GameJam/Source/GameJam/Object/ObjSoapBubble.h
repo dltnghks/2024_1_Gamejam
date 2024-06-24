@@ -44,12 +44,14 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	void Init(FVector destination, float moveSpeed = 100.0f, float spawnTime = 5.0f);
+	void Init(FVector start, FVector destination, float moveSpeed = 100.0f, float spawnTime = 5.0f);
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	void SetDestination(const FVector& destination) { _destination = destination; }
 	void SetMoveSpeed(float speed) { _moveSpeed = speed; }
+
+	void SoapBubbleDestory();
 	
 };

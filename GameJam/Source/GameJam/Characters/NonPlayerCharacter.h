@@ -13,6 +13,9 @@ class GAMEJAM_API ANonPlayerCharacter : public ACharacter
 protected:
 	UPROPERTY(BlueprintReadOnly)
 	FVector _destination;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool IsCombat = false;
 	
 	UPROPERTY()
 	bool IsDeath = false;
@@ -27,7 +30,7 @@ protected:
 	class UNavigationSystemV1* _navSystem;
 
 	UPROPERTY()
-	bool _init = false;;
+	bool _init = false;
 
 public:
 	// Sets default values for this character's properties

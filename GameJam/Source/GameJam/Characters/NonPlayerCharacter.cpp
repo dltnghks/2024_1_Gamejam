@@ -28,6 +28,7 @@ void ANonPlayerCharacter::Init(AObjNPCArea* npcArea)
 	UE_LOG(LogTemp, Log, TEXT("NPC Init"));
 	_init = true;
 	IsDeath = false;
+	IsCombat = false;
 	_npcArea = npcArea;
 }
 

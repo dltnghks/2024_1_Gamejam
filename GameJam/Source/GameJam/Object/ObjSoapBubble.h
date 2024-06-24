@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "ObjectPool/Poolable.h"
 #include "ObjSoapBubble.generated.h"
 
 UCLASS()
@@ -17,6 +18,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Mesh, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* MeshComponent;
+
+	UPROPERTY(VisibleAnywhere)
+	UPoolable* PoolableComponent;
 
 protected:
 

@@ -12,6 +12,9 @@ AObjSoapBubble::AObjSoapBubble()
 	PrimaryActorTick.bCanEverTick = true;
 
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SphereMesh"));
+	PoolableComponent = CreateDefaultSubobject<UPoolable>(TEXT("Poolable"));
+	SetRootComponent(MeshComponent);
+	
 }
 
 // Called when the game starts or when spawned

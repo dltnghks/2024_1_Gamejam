@@ -3,12 +3,15 @@
 
 #include "ObjSoapBubble.h"
 
+#include "Kismet/KismetMathLibrary.h"
+
 // Sets default values
 AObjSoapBubble::AObjSoapBubble()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SphereMesh"));
 }
 
 // Called when the game starts or when spawned
@@ -22,6 +25,9 @@ void AObjSoapBubble::BeginPlay()
 void AObjSoapBubble::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	FVector NewLocation = FMath::VInterpConstantTo(GetActorLocation(), _destination, DeltaTime, _moveSpeed);
+	SetActorLocation(NewLocation);
 
 }
 

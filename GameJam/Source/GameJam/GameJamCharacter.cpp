@@ -96,6 +96,7 @@ void AGameJamCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	{
 		//Jumping
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		//Moving
@@ -130,6 +131,21 @@ void AGameJamCharacter::Look(const FInputActionValue& Value)
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
+}
+
+void AGameJamCharacter::Jump()
+{
+	Super::Jump();
+
+	if(bInWater)
+	{
+		AddMovementInput(GetActorUpVector(), 0.5f);
+	}
+}
+
+void AGameJamCharacter::StopJumping()
+{
+	Super::StopJumping();
 }
 
 void AGameJamCharacter::SetHasRifle(bool bNewHasRifle)

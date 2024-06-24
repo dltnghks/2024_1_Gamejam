@@ -42,6 +42,7 @@ class AGameJamCharacter : public ACharacter
 	bool bInWater = false;
 	bool bIsWalking = true;
 	bool bIsSwimming = false;
+	
 	float WaterZ;
 public:
 	AGameJamCharacter();
@@ -75,6 +76,10 @@ protected:
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
+	virtual void Jump() override;
+
+	virtual void StopJumping() override;
+	
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;

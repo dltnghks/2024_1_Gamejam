@@ -11,7 +11,7 @@ void UAnimInstanceCharacter::NativeUpdateAnimation(float DeltaSeconds)
 	auto pawn = TryGetPawnOwner();
 	if (IsValid(pawn))
 	{
-		_speed = pawn->GetVelocity().Size(); // speed에 pawn의 velocity size를 받아 옴
+		Speed = pawn->GetVelocity().Size(); // speed에 pawn의 velocity size를 받아 옴
 	}
 }
 
@@ -29,7 +29,7 @@ void UAnimInstanceCharacter::PlayDeathMontage()
 	{
 		Montage_Play(_deathMontage);
 	}
-	_bDeath = true;
+	IsDeath = true;
 }
 
 void UAnimInstanceCharacter::PlayHitMontage()

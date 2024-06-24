@@ -3,9 +3,13 @@
 
 #include "NonPlayerCharacter.h"
 
+#include "NavigationSystem.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "Components/SphereComponent.h"
 #include "GameJam/GameJamGameMode.h"
 #include "GameJam/Managers/ResourceManager.h"
 #include "GameJam/Object/ObjFish.h"
+#include "GameJam/Object/ObjNPCArea.h"
 #include "Kismet/GameplayStatics.h"
 #include "WorldPartition/ContentBundle/ContentBundleLog.h"
 
@@ -18,22 +22,40 @@ ANonPlayerCharacter::ANonPlayerCharacter()
 
 }
 
-void ANonPlayerCharacter::Init()
+void ANonPlayerCharacter::Init(AObjNPCArea* npcArea)
 {
+
 	UE_LOG(LogTemp, Log, TEXT("NPC Init"));
+	_init = true;
 	IsDeath = false;
+	_npcArea = npcArea;
 }
+
 
 // Called when the game starts or when spawned
 void ANonPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	_navSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
 }
 
 // Called every frame
 void ANonPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if(_init == false ) return;
+	
+	FNavLocation NextPatrol;
+	FVector velocity = GetVelocity();
+	if (_navSystem && velocity.IsNearlyZero())
+	{
+		float radius = _npcArea->SphereComponent->GetScaledSphereRadius();
+		UE_LOG(LogTemp, Log, TEXT("radius : %f"), radius);
+		if (_navSystem->GetRandomPointInNavigableRadius(_npcArea->GetActorLocation(), 400.0f, NextPatrol))
+		{
+			UAIBlueprintHelperLibrary::SimpleMoveToLocation(GetController(), NextPatrol);
+		}
+	}
 
 }
 

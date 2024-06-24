@@ -20,11 +20,20 @@ protected:
 	UPROPERTY(EditAnyWhere, Category = "fish")
 	TSubclassOf<class AObjFish> _fishClass;
 
+	UPROPERTY()
+	class AObjNPCArea* _npcArea;
+
+	UPROPERTY()
+	class UNavigationSystemV1* _navSystem;
+
+	UPROPERTY()
+	bool _init = false;;
+
 public:
 	// Sets default values for this character's properties
 	ANonPlayerCharacter();
 
-	void Init();
+	void Init(class AObjNPCArea* npcArea);
 	
 protected:
 	// Called when the game starts or when spawned

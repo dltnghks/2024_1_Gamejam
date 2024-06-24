@@ -15,6 +15,10 @@ class GAMEJAM_API AObjNPCArea : public AActor
 	
 public:
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Mesh, meta = (AllowPrivateAccess = "true"))
+	class USphereComponent* SphereComponent;
+
+protected:
 	UPROPERTY(EditAnywhere, Category = "NPC Setting")
 	TMap<TSubclassOf<ANonPlayerCharacter>, int> _npcMap ;
 

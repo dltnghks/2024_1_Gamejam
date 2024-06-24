@@ -3,6 +3,7 @@
 
 #include "ObjNPCArea.h"
 
+#include "Components/SphereComponent.h"
 #include "GameJam/Characters/NonPlayerCharacter.h"
 #include "WorldPartition/ContentBundle/ContentBundleLog.h"
 
@@ -12,6 +13,8 @@ AObjNPCArea::AObjNPCArea()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
+	
 }
 
 // Called when the game starts or when spawned
@@ -28,7 +31,7 @@ void AObjNPCArea::BeginPlay()
 			FActorSpawnParameters parameters;
 			parameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 			ANonPlayerCharacter* newCharacter = GetWorld()->SpawnActor<ANonPlayerCharacter>(characterClass,GetActorLocation(), FRotator::ZeroRotator, parameters);
-			newCharacter->Init();
+			newCharacter->Init(this);
 			UE_LOG(LogTemp, Log, TEXT("newCharacter Spanw"));
 			_npcList.Add(newCharacter);
 		}

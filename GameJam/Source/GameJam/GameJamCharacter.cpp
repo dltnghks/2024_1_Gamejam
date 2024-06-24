@@ -7,6 +7,8 @@
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GameJamGameMode.h"
+#include "InGameUI.h"
 #include "ShockWave.h"
 #include "ShockWaveNiagaraActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -15,6 +17,8 @@
 
 //////////////////////////////////////////////////////////////////////////
 // AGameJamCharacter
+
+class AGameJamGameMode;
 
 AGameJamCharacter::AGameJamCharacter()
 {
@@ -54,16 +58,21 @@ void AGameJamCharacter::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
-
+	
+	InGameUI = CreateWidget<UInGameUI>(GetWorld(), BP_InGameUI);
 }
 
 void AGameJamCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if(CurShockWaveCoolDown >= 0)
+	if(CurShockWaveCoolDown > 0)
 	{
 		CurShockWaveCoolDown -= DeltaSeconds;
+		InGameUI->SetCoolDown(FString::FromInt(CurShockWaveCoolDown));
+	} else
+	{
+		InGameUI->SetCoolDown(FString("LMB!"));
 	}
 	
 	if(bInWater)

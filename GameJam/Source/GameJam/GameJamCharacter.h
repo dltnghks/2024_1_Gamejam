@@ -48,6 +48,9 @@ class AGameJamCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, Category=ShockWave)
 	float ShockWaveCoolDown;
 	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UInGameUI> BP_InGameUI;
+	
 	FRotator ShockWaveRot;
 	
 	bool bInWater = false;
@@ -55,7 +58,7 @@ class AGameJamCharacter : public ACharacter
 	bool bIsSwimming = false;
 	
 	float WaterZ;
-	float CurShockWaveCoolDown = 0;
+	float CurShockWaveCoolDown = 0;	
 	
 public:
 	AGameJamCharacter();
@@ -81,6 +84,9 @@ public:
 	/** Getter for the bool */
 	UFUNCTION(BlueprintCallable, Category = Weapon)
 	bool GetHasRifle();
+	
+	UPROPERTY()
+	UInGameUI* InGameUI;
 	
 protected:
 	/** Called for movement input */

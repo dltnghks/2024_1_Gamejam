@@ -6,6 +6,7 @@
 #include "BaseManager.h"
 #include "GameJam/GameJamGameMode.h"
 #include "GameJam/Object/ObjectPool/Poolable.h"
+#include "GameJam/Object/ObjectPool/PoolManager.h"
 #include "UObject/NoExportTypes.h"
 #include "ResourceManager.generated.h"
 
@@ -28,13 +29,13 @@ public:
 template <typename T>
 T* UResourceManager::Instantiate(TSubclassOf<T> original)
 {
-	if(original.GetDefaultObject()->GetComponentByClass(UPoolable::StaticClass()))
+	auto components = Cast<AActor>(original.GetDefaultObject())->K2_GetComponentsByClass(UPoolable::StaticClass());
+	if(components.Num() >= 1)
 	{
 		// 오브젝트 풀에서 뽑아오기
-		return Cast<T>(_gameMode->PoolManager->Pop(original)->GetOwner());
+		return Cast<T>(_gameMode->PoolManager->Pop(original)->GetOwner());		
 	}
-
-	UE_LOG(LogTemp, Log, TEXT("%s 생성"), *original->GetName());
+	UE_LOG(LogTemp, Log, TEXT("---%s 생성, %d"), *original->GetName(), components.Num()	);
 	T* actor = _gameMode->GetWorld()->SpawnActor<T>(original.Get());
 	return actor;
 };

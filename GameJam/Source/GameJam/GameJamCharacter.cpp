@@ -8,17 +8,17 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameJamGameMode.h"
+#include "InGameUI.h"
 #include "ShockWave.h"
 #include "ShockWaveNiagaraActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PhysicsVolume.h"
-#include "Kismet/GameplayStatics.h"
-#include "Managers/ResourceManager.h"
-#include "Object/ObjSoapBubble.h"
 
 
 //////////////////////////////////////////////////////////////////////////
 // AGameJamCharacter
+
+class AGameJamGameMode;
 
 AGameJamCharacter::AGameJamCharacter()
 {
@@ -31,7 +31,7 @@ AGameJamCharacter::AGameJamCharacter()
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
-	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, 60.f)); // Position the camera
+	FirstPersonCameraComponent->SetRelativeLocation(FVector(0.f, -85.f, 35.f)); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
@@ -40,7 +40,7 @@ AGameJamCharacter::AGameJamCharacter()
 	Mesh1P->SetupAttachment(FirstPersonCameraComponent);
 	Mesh1P->bCastDynamicShadow = false;
 	Mesh1P->CastShadow = false;
-	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
+	Mesh1P->SetRelativeLocation(FVector(90.f, 0.f, -80.f));
 
 	ShockWaveRot = FRotator(0, 0, 90);
 }
@@ -58,16 +58,21 @@ void AGameJamCharacter::BeginPlay()
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
-
+	
+	InGameUI = CreateWidget<UInGameUI>(GetWorld(), BP_InGameUI);
 }
 
 void AGameJamCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if(CurShockWaveCoolDown >= 0)
+	if(CurShockWaveCoolDown > 0)
 	{
 		CurShockWaveCoolDown -= DeltaSeconds;
+		InGameUI->SetCoolDown(FString::FromInt(CurShockWaveCoolDown));
+	} else
+	{
+		InGameUI->SetCoolDown(FString("LMB!"));
 	}
 	
 	if(bInWater)
@@ -118,9 +123,6 @@ void AGameJamCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 
 		//Skill
 		EnhancedInputComponent->BindAction(SkillAction, ETriggerEvent::Triggered, this, &AGameJamCharacter::Skill);
-
-		//Skill
-		EnhancedInputComponent->BindAction(SoapBubbleAction, ETriggerEvent::Triggered, this, &AGameJamCharacter::SpawnSoapBubble);
 	}
 }
 
@@ -172,13 +174,6 @@ void AGameJamCharacter::Skill()
 		CurShockWaveCoolDown = ShockWaveCoolDown;
 		AShockWave* ShockWave = GetWorld()->SpawnActor<AShockWave>(BP_ShockWave, GetActorLocation(), ShockWaveRot);
 	}
-}
-
-void AGameJamCharacter::SpawnSoapBubble()
-{
-	AGameJamGameMode* gameMode = Cast<AGameJamGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-	AObjSoapBubble* newSoapBubble = gameMode->ResourceManager->Instantiate<AObjSoapBubble>(BP_SoapBubble);
-	newSoapBubble->Init(GetActorLocation(), gameMode->Destination);
 }
 
 void AGameJamCharacter::SetHasRifle(bool bNewHasRifle)

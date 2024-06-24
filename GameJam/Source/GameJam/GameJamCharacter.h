@@ -39,12 +39,16 @@ class AGameJamCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* MoveAction;
 
-	
+	bool bInWater = false;
+	bool bIsWalking = true;
+	bool bIsSwimming = false;
+	float WaterZ;
 public:
 	AGameJamCharacter();
 
 protected:
 	virtual void BeginPlay();
+	virtual void Tick(float DeltaSeconds) override;
 
 public:
 		
@@ -63,7 +67,7 @@ public:
 	/** Getter for the bool */
 	UFUNCTION(BlueprintCallable, Category = Weapon)
 	bool GetHasRifle();
-
+	
 protected:
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);
@@ -77,6 +81,10 @@ protected:
 	// End of APawn interface
 
 public:
+	void EnterWater();
+
+	void ExitWater();
+	
 	/** Returns Mesh1P subobject **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/

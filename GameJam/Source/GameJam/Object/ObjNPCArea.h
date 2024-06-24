@@ -6,12 +6,21 @@
 #include "GameFramework/Actor.h"
 #include "ObjNPCArea.generated.h"
 
+class ANonPlayerCharacter;
+
 UCLASS()
 class GAMEJAM_API AObjNPCArea : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
+public:
+
+	UPROPERTY(EditAnywhere, Category = "NPC Setting")
+	TMap<TSubclassOf<ANonPlayerCharacter>, int> _npcMap ;
+
+	UPROPERTY(VisibleAnywhere, Category = "NPC List")
+	TArray<ANonPlayerCharacter*> _npcList;
+	
 	// Sets default values for this actor's properties
 	AObjNPCArea();
 

@@ -3,6 +3,9 @@
 
 #include "ObjNPCArea.h"
 
+#include "GameJam/Characters/NonPlayerCharacter.h"
+#include "WorldPartition/ContentBundle/ContentBundleLog.h"
+
 // Sets default values
 AObjNPCArea::AObjNPCArea()
 {
@@ -15,6 +18,20 @@ AObjNPCArea::AObjNPCArea()
 void AObjNPCArea::BeginPlay()
 {
 	Super::BeginPlay();
+
+	for(auto elem : _npcMap)
+	{
+		auto characterClass = elem.Key;
+		// 랜던 위치 생성
+		for(int i = 0; i < elem.Value; i++)
+		{
+			FActorSpawnParameters parameters;
+			parameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+			ANonPlayerCharacter* newCharacter = GetWorld()->SpawnActor<ANonPlayerCharacter>(characterClass,GetActorLocation(), FRotator::ZeroRotator, parameters);
+			UE_LOG(LogTemp, Log, TEXT("newCharacter Spanw"));
+			_npcList.Add(newCharacter);
+		}
+	}
 	
 }
 

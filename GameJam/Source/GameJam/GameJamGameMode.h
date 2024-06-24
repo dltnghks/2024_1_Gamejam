@@ -16,7 +16,9 @@ class AGameJamGameMode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	UPROPERTY()
 	UPoolManager* PoolManager;
+	UPROPERTY()
 	UResourceManager* ResourceManager;
 	
 	AGameJamGameMode();

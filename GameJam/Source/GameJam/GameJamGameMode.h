@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "Object/ObjectPool/PoolManager.h"
 #include "GameJamGameMode.generated.h"
 
 class UPoolManager;
@@ -15,9 +14,14 @@ class AGameJamGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
+private:
+	UPROPERTY(EditAnywhere, Category ="Set Class")
+	TSubclassOf<class AObjSoapBubble> testClass;
+	
 public:
 	UPROPERTY()
 	UPoolManager* PoolManager;
+
 	UPROPERTY()
 	UResourceManager* ResourceManager;
 	

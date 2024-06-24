@@ -7,6 +7,8 @@
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/PhysicsVolume.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -53,6 +55,38 @@ void AGameJamCharacter::BeginPlay()
 
 }
 
+void AGameJamCharacter::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	
+	if(bInWater)
+	{
+		float CalcZ = WaterZ - GetActorLocation().Z;
+		float CapsuleHalfHeight = GetCapsuleComponent()->GetCollisionShape().GetCapsuleHalfHeight();
+		if(CalcZ > CapsuleHalfHeight)
+		{
+			UCharacterMovementComponent* CharacterMovementComp = GetCharacterMovement();
+			if(!bIsSwimming) {
+				UE_LOG(LogTemp, Log, TEXT("SetSwimming"));
+				bIsSwimming = true;
+				
+				CharacterMovementComp->GetPhysicsVolume()->bWaterVolume = true;
+				CharacterMovementComp->SetMovementMode(MOVE_Swimming);
+				
+			}
+		} else if(CalcZ < CapsuleHalfHeight)
+		{
+			UCharacterMovementComponent* CharacterMovementComp = GetCharacterMovement();
+			if(bIsSwimming) {
+				bIsSwimming = false;
+				UE_LOG(LogTemp, Log, TEXT("SetWalking"));
+				CharacterMovementComp->GetPhysicsVolume()->bWaterVolume = true;
+				CharacterMovementComp->SetMovementMode(MOVE_Walking);
+			}
+		}
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////// Input
 
 void AGameJamCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -71,7 +105,6 @@ void AGameJamCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGameJamCharacter::Look);
 	}
 }
-
 
 void AGameJamCharacter::Move(const FInputActionValue& Value)
 {
@@ -107,4 +140,19 @@ void AGameJamCharacter::SetHasRifle(bool bNewHasRifle)
 bool AGameJamCharacter::GetHasRifle()
 {
 	return bHasRifle;
+}
+
+void AGameJamCharacter::EnterWater()
+{
+	bInWater = true;
+	
+	WaterZ = GetActorLocation().Z;
+	UE_LOG(LogTemp, Log, TEXT("EnterWater"));
+}
+
+
+void AGameJamCharacter::ExitWater()
+{
+	bInWater = false;
+	UE_LOG(LogTemp, Log, TEXT("ExitWater"));
 }

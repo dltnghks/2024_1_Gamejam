@@ -41,6 +41,12 @@ class AGameJamCharacter : public ACharacter
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* SkillAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
+	class UInputAction* SoapBubbleAction;
+
+	UPROPERTY(EditAnywhere, Category=SoapBubble)
+	TSubclassOf<class AObjSoapBubble> BP_SoapBubble;
 	
 	UPROPERTY(EditAnywhere, Category=ShockWave)
 	TSubclassOf<class AShockWave> BP_ShockWave; 
@@ -94,6 +100,8 @@ protected:
 	virtual void StopJumping() override;
 
 	void Skill();
+
+	void SpawnSoapBubble();
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;

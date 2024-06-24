@@ -17,13 +17,16 @@ class AGameJamGameMode : public AGameModeBase
 private:
 	UPROPERTY(EditAnywhere, Category ="Set Class")
 	TSubclassOf<class AObjSoapBubble> testClass;
-	
+
 public:
 	UPROPERTY()
 	UPoolManager* PoolManager;
 
 	UPROPERTY()
 	UResourceManager* ResourceManager;
+
+	UPROPERTY(EditAnywhere, Category = "Destination")
+	FVector Destination;
 	
 	AGameJamGameMode();
 

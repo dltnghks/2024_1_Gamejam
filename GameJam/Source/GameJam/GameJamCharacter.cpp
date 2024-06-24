@@ -7,10 +7,14 @@
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GameJamGameMode.h"
 #include "ShockWave.h"
 #include "ShockWaveNiagaraActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PhysicsVolume.h"
+#include "Kismet/GameplayStatics.h"
+#include "Managers/ResourceManager.h"
+#include "Object/ObjSoapBubble.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -117,6 +121,9 @@ void AGameJamCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 
 		//Skill
 		EnhancedInputComponent->BindAction(SkillAction, ETriggerEvent::Triggered, this, &AGameJamCharacter::Skill);
+
+		//Skill
+		EnhancedInputComponent->BindAction(SoapBubbleAction, ETriggerEvent::Triggered, this, &AGameJamCharacter::SpawnSoapBubble);
 	}
 }
 
@@ -168,6 +175,13 @@ void AGameJamCharacter::Skill()
 		CurShockWaveCoolDown = ShockWaveCoolDown;
 		AShockWave* ShockWave = GetWorld()->SpawnActor<AShockWave>(BP_ShockWave, GetActorLocation(), ShockWaveRot);
 	}
+}
+
+void AGameJamCharacter::SpawnSoapBubble()
+{
+	AGameJamGameMode* gameMode = Cast<AGameJamGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	AObjSoapBubble* newSoapBubble = gameMode->ResourceManager->Instantiate<AObjSoapBubble>(BP_SoapBubble);
+	newSoapBubble->Init(GetActorLocation(), gameMode->Destination);
 }
 
 void AGameJamCharacter::SetHasRifle(bool bNewHasRifle)

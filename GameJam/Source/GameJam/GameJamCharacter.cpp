@@ -67,17 +67,19 @@ void AGameJamCharacter::Tick(float DeltaSeconds)
 		{
 			UCharacterMovementComponent* CharacterMovementComp = GetCharacterMovement();
 			if(!bIsSwimming) {
+				UE_LOG(LogTemp, Log, TEXT("SetSwimming"));
 				bIsSwimming = true;
 				
 				CharacterMovementComp->GetPhysicsVolume()->bWaterVolume = true;
 				CharacterMovementComp->SetMovementMode(MOVE_Swimming);
+				
 			}
 		} else if(CalcZ < CapsuleHalfHeight)
 		{
 			UCharacterMovementComponent* CharacterMovementComp = GetCharacterMovement();
 			if(bIsSwimming) {
 				bIsSwimming = false;
-				
+				UE_LOG(LogTemp, Log, TEXT("SetWalking"));
 				CharacterMovementComp->GetPhysicsVolume()->bWaterVolume = true;
 				CharacterMovementComp->SetMovementMode(MOVE_Walking);
 			}
@@ -143,6 +145,7 @@ bool AGameJamCharacter::GetHasRifle()
 void AGameJamCharacter::EnterWater()
 {
 	bInWater = true;
+	
 	WaterZ = GetActorLocation().Z;
 	UE_LOG(LogTemp, Log, TEXT("EnterWater"));
 }

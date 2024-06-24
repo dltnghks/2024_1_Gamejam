@@ -31,7 +31,7 @@ AGameJamCharacter::AGameJamCharacter()
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
-	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, 60.f)); // Position the camera
+	FirstPersonCameraComponent->SetRelativeLocation(FVector(0.f, -85.f, 35.f)); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
@@ -40,7 +40,7 @@ AGameJamCharacter::AGameJamCharacter()
 	Mesh1P->SetupAttachment(FirstPersonCameraComponent);
 	Mesh1P->bCastDynamicShadow = false;
 	Mesh1P->CastShadow = false;
-	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
+	Mesh1P->SetRelativeLocation(FVector(90.f, 0.f, -80.f));
 
 	ShockWaveRot = FRotator(0, 0, 90);
 }

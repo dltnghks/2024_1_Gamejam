@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "ShockWaveNiagaraActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PhysicsVolume.h"
 
@@ -37,6 +38,7 @@ AGameJamCharacter::AGameJamCharacter()
 	//Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
 	Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
 
+	ShockWaveRot = FRotator(0, 0, 90);
 }
 
 void AGameJamCharacter::BeginPlay()
@@ -58,6 +60,11 @@ void AGameJamCharacter::BeginPlay()
 void AGameJamCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+
+	if(CurShockWaveCoolDown >= 0)
+	{
+		CurShockWaveCoolDown -= DeltaSeconds;
+	}
 	
 	if(bInWater)
 	{
@@ -104,6 +111,9 @@ void AGameJamCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 
 		//Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGameJamCharacter::Look);
+
+		//Skill
+		EnhancedInputComponent->BindAction(SkillAction, ETriggerEvent::Triggered, this, &AGameJamCharacter::Skill);
 	}
 }
 
@@ -146,6 +156,15 @@ void AGameJamCharacter::Jump()
 void AGameJamCharacter::StopJumping()
 {
 	Super::StopJumping();
+}
+
+void AGameJamCharacter::Skill()
+{
+	if(CurShockWaveCoolDown < 0)
+	{
+		CurShockWaveCoolDown = ShockWaveCoolDown;
+		AShockWaveNiagaraActor* ShockWaveActor = GetWorld()->SpawnActor<AShockWaveNiagaraActor>(BP_ShockWave, GetActorLocation(), ShockWaveRot);
+	}
 }
 
 void AGameJamCharacter::SetHasRifle(bool bNewHasRifle)

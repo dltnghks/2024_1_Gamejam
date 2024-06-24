@@ -10,11 +10,22 @@ UCLASS()
 class GAMEJAM_API ANonPlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
+protected:
+	UPROPERTY()
+	FVector _destination;
+	
+	UPROPERTY()
+	bool IsDeath = false;
+
+	UPROPERTY(EditAnyWhere, Category = "fish")
+	TSubclassOf<class AObjFish> _fishClass;
 
 public:
 	// Sets default values for this character's properties
 	ANonPlayerCharacter();
 
+	void Init();
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -25,5 +36,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void NPCDeath();
 
 };

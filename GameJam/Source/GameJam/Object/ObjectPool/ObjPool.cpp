@@ -3,9 +3,12 @@
 
 #include "ObjPool.h"
 
-void UObjPool::Init(TSubclassOf<AActor> original, int count)
+#include "GameJam/GameJamGameMode.h"
+
+void UObjPool::Init(TSubclassOf<AActor> original, AGameJamGameMode* gameMode, int count)
 
 {
+	_gameMode  = gameMode;
 	Original = original;
 	for(int i = 0; i < count; i++)
 	{
@@ -18,7 +21,7 @@ void UObjPool::Push(UPoolable* poolable)
 {
 	if(poolable == nullptr) return;
 
-	poolable->GetOwner()->SetHidden(false);
+	poolable->GetOwner()->SetHidden(true);
 	poolable->IsUsing = false;
 
 	_poolStack.Push(poolable);
@@ -37,16 +40,16 @@ UPoolable* UObjPool::Pop()
 		poolable = Create();
 	}
 
-	poolable->GetOwner()->SetHidden(true);
+	poolable->GetOwner()->SetHidden(false);
 	poolable->IsUsing = true;
 
 	return poolable;
 }
 
 UPoolable* UObjPool::Create()
-
 {
-	AActor* actor = NewObject<AActor>(this, Original.Get());
-	UPoolable* NewUPoolable = NewObject<UPoolable>(actor, UPoolable::StaticClass(), FName("Poolable"));
+	AActor* actor = _gameMode->GetWorld()->SpawnActor<AActor>(Original.Get());
+	auto component = actor->K2_GetComponentsByClass(UPoolable::StaticClass());
+	UPoolable* NewUPoolable = Cast<UPoolable>(component[0]);
 	return NewUPoolable;
 }

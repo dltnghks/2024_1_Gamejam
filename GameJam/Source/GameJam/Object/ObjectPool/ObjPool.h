@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Poolable.h"
+#include "GameJam/GameJamGameMode.h"
 #include "UObject/NoExportTypes.h"
 #include "ObjPool.generated.h"
 
@@ -11,7 +12,7 @@
  * 
  */
 class UPoolable;
-
+class AGameJamGameMode;
 UCLASS()
 class GAMEJAM_API UObjPool : public UObject
 {
@@ -23,8 +24,11 @@ public:
 
 	UPROPERTY()
 		TArray<UPoolable*> _poolStack;
-	
-	void Init(TSubclassOf<AActor> original, int count = 5);
+
+	UPROPERTY()
+		AGameJamGameMode* _gameMode;
+
+	void Init(TSubclassOf<AActor> original, AGameJamGameMode* gameMode, int count = 5);
 
 	void Push(UPoolable* poolable);
 

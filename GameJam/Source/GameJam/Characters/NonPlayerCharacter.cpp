@@ -30,6 +30,10 @@ void ANonPlayerCharacter::Init(AObjNPCArea* npcArea)
 	IsDeath = false;
 	IsCombat = false;
 	_npcArea = npcArea;
+	FNavLocation NextPatrol;
+	float radius = _npcArea->SphereComponent->GetScaledSphereRadius();
+	_navSystem->GetRandomPointInNavigableRadius(_npcArea->GetActorLocation(), radius, NextPatrol);
+	_destination = NextPatrol;
 }
 
 

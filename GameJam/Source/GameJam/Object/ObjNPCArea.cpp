@@ -29,11 +29,13 @@ void AObjNPCArea::BeginPlay()
 		for(int i = 0; i < elem.Value; i++)
 		{
 			FActorSpawnParameters parameters;
-			parameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+			parameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 			ANonPlayerCharacter* newCharacter = GetWorld()->SpawnActor<ANonPlayerCharacter>(characterClass,GetActorLocation(), FRotator::ZeroRotator, parameters);
-			newCharacter->Init(this);
-			UE_LOG(LogTemp, Log, TEXT("newCharacter Spanw"));
-			_npcList.Add(newCharacter);
+			if (newCharacter) {
+				newCharacter->Init(this);
+				UE_LOG(LogTemp, Log, TEXT("newCharacter Spanw"));
+				_npcList.Add(newCharacter);
+			}
 		}
 	}
 	

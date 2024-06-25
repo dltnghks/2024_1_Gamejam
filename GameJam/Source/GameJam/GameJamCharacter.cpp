@@ -11,11 +11,13 @@
 #include "InGameUI.h"
 #include "ShockWave.h"
 #include "ShockWaveNiagaraActor.h"
+#include "AssetTypeActions/AssetDefinition_SoundBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PhysicsVolume.h"
 #include "Kismet/GameplayStatics.h"
 #include "Managers/ResourceManager.h"
 #include "Object/ObjSoapBubble.h"
+#include "Sound/SoundCue.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -184,6 +186,9 @@ void AGameJamCharacter::Skill()
 	{
 		CurShockWaveCoolDown = ShockWaveCoolDown;
 		AShockWave* ShockWave = GetWorld()->SpawnActor<AShockWave>(BP_ShockWave, GetActorLocation(), ShockWaveRot);
+		int randint = FMath::RandRange(0, 3);
+		UE_LOG(LogTemp, Log, TEXT("%d randint"), randint);
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), Noise[randint], GetActorLocation());
 	}
 }
 

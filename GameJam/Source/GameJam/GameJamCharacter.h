@@ -66,7 +66,7 @@ class AGameJamCharacter : public ACharacter
 	float WaterZ;
 	float CurShockWaveCoolDown = 0;	
 	int Score = 0;
-	int HP = 100;
+	int HP = 30;
 	
 public:
 	AGameJamCharacter();

@@ -17,6 +17,14 @@ class GAMEJAM_API UInGameUI : public UUserWidget
 	UPROPERTY(meta=(BindWidget))
 	class UTextBlock* CoolDown_Text;
 
+	UPROPERTY(meta=(BindWidget))
+	class UTextBlock* HP_Text;
+
+	UPROPERTY(meta=(BindWidget))
+	class UTextBlock* Score_Text;
+	
 public:
 	void SetCoolDown(FString CoolDown);
+	void SetHP(FString HP);
+	void SetScore(FString Score);
 };

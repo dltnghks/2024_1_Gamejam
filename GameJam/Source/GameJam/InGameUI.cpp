@@ -9,3 +9,13 @@ void UInGameUI::SetCoolDown(FString CoolDown)
 {
 	CoolDown_Text->SetText(FText::FromString(CoolDown));
 }
+
+void UInGameUI::SetHP(FString HP)
+{
+	HP_Text->SetText(FText::FromString(HP));
+}
+
+void UInGameUI::SetScore(FString Score)
+{
+	Score_Text->SetText(FText::FromString(Score));
+}

@@ -56,6 +56,9 @@ class AGameJamCharacter : public ACharacter
 	
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UInGameUI> BP_InGameUI;
+
+	UPROPERTY(EditAnywhere)
+	TArray<class USoundCue*> Noise;
 	
 	FRotator ShockWaveRot;
 	

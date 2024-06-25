@@ -13,6 +13,9 @@
 #include "ShockWaveNiagaraActor.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PhysicsVolume.h"
+#include "Kismet/GameplayStatics.h"
+#include "Managers/ResourceManager.h"
+#include "Object/ObjSoapBubble.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -24,7 +27,7 @@ AGameJamCharacter::AGameJamCharacter()
 {
 	// Character doesnt have a rifle at start
 	bHasRifle = false;
-	
+
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
 
@@ -51,12 +54,13 @@ void AGameJamCharacter::BeginPlay()
 	//Add Input Mapping Context
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<
+			UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
 	}
-	
+
 	InGameUI = CreateWidget<UInGameUI>(GetWorld(), BP_InGameUI);
 	InGameUI->AddToViewport();
 }
@@ -65,34 +69,37 @@ void AGameJamCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if(CurShockWaveCoolDown > 0)
+	if (CurShockWaveCoolDown > 0)
 	{
 		CurShockWaveCoolDown -= DeltaSeconds;
 		InGameUI->SetCoolDown(FString::FromInt(CurShockWaveCoolDown));
-	} else
+	}
+	else
 	{
 		InGameUI->SetCoolDown(FString("LMB!"));
 	}
-	
-	if(bInWater)
+
+	if (bInWater)
 	{
 		float CalcZ = WaterZ - GetActorLocation().Z;
 		float CapsuleHalfHeight = GetCapsuleComponent()->GetCollisionShape().GetCapsuleHalfHeight();
-		if(CalcZ > CapsuleHalfHeight)
+		if (CalcZ > CapsuleHalfHeight)
 		{
 			UCharacterMovementComponent* CharacterMovementComp = GetCharacterMovement();
-			if(!bIsSwimming) {
+			if (!bIsSwimming)
+			{
 				UE_LOG(LogTemp, Log, TEXT("SetSwimming"));
 				bIsSwimming = true;
-				
+
 				CharacterMovementComp->GetPhysicsVolume()->bWaterVolume = true;
 				CharacterMovementComp->SetMovementMode(MOVE_Swimming);
-				
 			}
-		} else if(CalcZ <= CapsuleHalfHeight)
+		}
+		else if (CalcZ <= CapsuleHalfHeight)
 		{
 			UCharacterMovementComponent* CharacterMovementComp = GetCharacterMovement();
-			if(bIsSwimming) {
+			if (bIsSwimming)
+			{
 				bIsSwimming = false;
 				UE_LOG(LogTemp, Log, TEXT("SetWalking"));
 				CharacterMovementComp->GetPhysicsVolume()->bWaterVolume = false;
@@ -122,6 +129,10 @@ void AGameJamCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 
 		//Skill
 		EnhancedInputComponent->BindAction(SkillAction, ETriggerEvent::Triggered, this, &AGameJamCharacter::Skill);
+
+		//SpawnBubble
+		EnhancedInputComponent->BindAction(SoapBubbleAction, ETriggerEvent::Triggered, this,
+		                                   &AGameJamCharacter::SpawnSoapBubble);
 	}
 }
 
@@ -155,7 +166,7 @@ void AGameJamCharacter::Jump()
 {
 	Super::Jump();
 
-	if(bInWater)
+	if (bInWater)
 	{
 		AddMovementInput(GetActorUpVector(), 0.5f);
 	}
@@ -168,11 +179,18 @@ void AGameJamCharacter::StopJumping()
 
 void AGameJamCharacter::Skill()
 {
-	if(CurShockWaveCoolDown <= 0)
+	if (CurShockWaveCoolDown <= 0)
 	{
 		CurShockWaveCoolDown = ShockWaveCoolDown;
 		AShockWave* ShockWave = GetWorld()->SpawnActor<AShockWave>(BP_ShockWave, GetActorLocation(), ShockWaveRot);
 	}
+}
+
+void AGameJamCharacter::SpawnSoapBubble()
+{
+	AGameJamGameMode* gameMode = Cast<AGameJamGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	AObjSoapBubble* newSoapBubble = gameMode->ResourceManager->Instantiate<AObjSoapBubble>(BP_SoapBubble);
+	newSoapBubble->Init(GetActorLocation(), gameMode->Destination);
 }
 
 void AGameJamCharacter::SetHasRifle(bool bNewHasRifle)
@@ -188,7 +206,7 @@ bool AGameJamCharacter::GetHasRifle()
 void AGameJamCharacter::EnterWater()
 {
 	bInWater = true;
-	
+
 	WaterZ = GetActorLocation().Z;
 	UE_LOG(LogTemp, Log, TEXT("EnterWater"));
 }

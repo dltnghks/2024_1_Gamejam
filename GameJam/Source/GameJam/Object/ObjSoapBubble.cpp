@@ -34,7 +34,7 @@ void AObjSoapBubble::Init(FVector start, FVector destination, float moveSpeed, f
 {
 	if(_spawnSound)
 	{
-		UGameplayStatics::PlaySoundAtLocation(this, _spawnSound, GetActorLocation(), FRotator::ZeroRotator, 1, 1, 0);
+		UGameplayStatics::PlaySoundAtLocation(this, _spawnSound, start, FRotator::ZeroRotator, 1, 1, 0);
 		UE_LOG(LogTemp, Log, TEXT("Spawn Sound"));
 	}
 	_init = true;

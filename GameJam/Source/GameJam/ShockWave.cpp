@@ -4,6 +4,7 @@
 #include "ShockWave.h"
 
 #include "GameJamCharacter.h"
+#include "Characters/NonPlayerCharacter.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"
@@ -48,15 +49,14 @@ void AShockWave::Tick(float DeltaTime)
 void AShockWave::OnCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Log, TEXT("OnCollisionShockWave"));
-	/*
+	
 	if (OtherActor && !OtherActor->IsA(AGameJamCharacter::StaticClass()))
 	{
 		
-		UClass* OverlappedCharacter = Cast<UClass>(OtherActor);
+		ANonPlayerCharacter* OverlappedCharacter = Cast<ANonPlayerCharacter>(OtherActor);
 		if (OverlappedCharacter)
 		{
-			
+			OverlappedCharacter->NPCDeath();
 		}
 	}
-	*/
 }

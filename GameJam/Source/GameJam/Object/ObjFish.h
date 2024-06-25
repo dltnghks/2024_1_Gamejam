@@ -10,6 +10,9 @@ UCLASS()
 class GAMEJAM_API AObjFish : public AActor
 {
 	GENERATED_BODY()
+
+	UPROPERTY(VisibleAnywhere, meta = (AllowPrivateAccess = "true"))
+	class USphereComponent* Collision;
 	
 public:
 	UPROPERTY(VisibleAnywhere)
@@ -22,6 +25,9 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION()
+	void OnCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

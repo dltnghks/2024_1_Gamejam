@@ -221,3 +221,16 @@ void AGameJamCharacter::ExitWater()
 	CharacterMovementComp->SetMovementMode(MOVE_Walking);
 	UE_LOG(LogTemp, Log, TEXT("ExitWater"));
 }
+
+void AGameJamCharacter::AddScore()
+{
+	InGameUI->SetScore(FString::FromInt(++Score));
+}
+
+void AGameJamCharacter::GetDamage()
+{
+	UE_LOG(LogTemp, Log, TEXT("Damage"));
+	int damage = FMath::RandRange(1, 3);
+	HP -= damage;
+	InGameUI->SetHP(FString::FromInt(HP));
+}

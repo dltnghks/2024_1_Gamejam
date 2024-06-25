@@ -65,6 +65,8 @@ class AGameJamCharacter : public ACharacter
 	
 	float WaterZ;
 	float CurShockWaveCoolDown = 0;	
+	int Score = 0;
+	int HP = 100;
 	
 public:
 	AGameJamCharacter();
@@ -117,6 +119,10 @@ public:
 	void EnterWater();
 
 	void ExitWater();
+
+	void AddScore();
+
+	void GetDamage();
 	
 	/** Returns Mesh1P subobject **/
 	USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }

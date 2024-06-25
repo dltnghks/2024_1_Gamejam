@@ -31,7 +31,6 @@ AGameJamCharacter::AGameJamCharacter()
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
 	FirstPersonCameraComponent->SetupAttachment(GetCapsuleComponent());
-	FirstPersonCameraComponent->SetRelativeLocation(FVector(0.f, -85.f, 35.f)); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 
 	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
@@ -40,7 +39,6 @@ AGameJamCharacter::AGameJamCharacter()
 	Mesh1P->SetupAttachment(FirstPersonCameraComponent);
 	Mesh1P->bCastDynamicShadow = false;
 	Mesh1P->CastShadow = false;
-	Mesh1P->SetRelativeLocation(FVector(90.f, 0.f, -80.f));
 
 	ShockWaveRot = FRotator(0, 0, 90);
 }
@@ -60,6 +58,7 @@ void AGameJamCharacter::BeginPlay()
 	}
 	
 	InGameUI = CreateWidget<UInGameUI>(GetWorld(), BP_InGameUI);
+	InGameUI->AddToViewport();
 }
 
 void AGameJamCharacter::Tick(float DeltaSeconds)
@@ -169,7 +168,7 @@ void AGameJamCharacter::StopJumping()
 
 void AGameJamCharacter::Skill()
 {
-	if(CurShockWaveCoolDown < 0)
+	if(CurShockWaveCoolDown <= 0)
 	{
 		CurShockWaveCoolDown = ShockWaveCoolDown;
 		AShockWave* ShockWave = GetWorld()->SpawnActor<AShockWave>(BP_ShockWave, GetActorLocation(), ShockWaveRot);

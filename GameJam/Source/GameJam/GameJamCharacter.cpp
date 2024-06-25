@@ -65,6 +65,9 @@ void AGameJamCharacter::BeginPlay()
 
 	InGameUI = CreateWidget<UInGameUI>(GetWorld(), BP_InGameUI);
 	InGameUI->AddToViewport();
+
+	int randint = FMath::RandRange(0, 2);
+	UGameplayStatics::PlaySound2D(GetWorld(), SC_BG[randint]);
 }
 
 void AGameJamCharacter::Tick(float DeltaSeconds)
@@ -93,6 +96,7 @@ void AGameJamCharacter::Tick(float DeltaSeconds)
 				UE_LOG(LogTemp, Log, TEXT("SetSwimming"));
 				bIsSwimming = true;
 
+				UGameplayStatics::PlaySoundAtLocation(GetWorld(), SC_Splash, GetActorLocation());
 				CharacterMovementComp->GetPhysicsVolume()->bWaterVolume = true;
 				CharacterMovementComp->SetMovementMode(MOVE_Swimming);
 			}
@@ -213,6 +217,7 @@ void AGameJamCharacter::EnterWater()
 	bInWater = true;
 
 	WaterZ = GetActorLocation().Z;
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), SC_Splash, GetActorLocation());
 	UE_LOG(LogTemp, Log, TEXT("EnterWater"));
 }
 

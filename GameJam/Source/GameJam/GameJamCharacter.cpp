@@ -131,8 +131,7 @@ void AGameJamCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerI
 		EnhancedInputComponent->BindAction(SkillAction, ETriggerEvent::Triggered, this, &AGameJamCharacter::Skill);
 
 		//SpawnBubble
-		EnhancedInputComponent->BindAction(SoapBubbleAction, ETriggerEvent::Triggered, this,
-		                                   &AGameJamCharacter::SpawnSoapBubble);
+		EnhancedInputComponent->BindAction(SoapBubbleAction, ETriggerEvent::Triggered, this, &AGameJamCharacter::SpawnSoapBubble);
 	}
 }
 
@@ -190,7 +189,10 @@ void AGameJamCharacter::SpawnSoapBubble()
 {
 	AGameJamGameMode* gameMode = Cast<AGameJamGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	AObjSoapBubble* newSoapBubble = gameMode->ResourceManager->Instantiate<AObjSoapBubble>(BP_SoapBubble);
-	newSoapBubble->Init(GetActorLocation(), gameMode->Destination);
+	newSoapBubble->SetActorRotation(GetActorForwardVector().Rotation());
+	//newSoapBubble->Init(GetActorLocation(), gameMode->Destination);
+	if(gameMode->DestinationActor)
+		newSoapBubble->Init(GetActorLocation(), gameMode->DestinationActor->GetRootComponent());
 }
 
 void AGameJamCharacter::SetHasRifle(bool bNewHasRifle)

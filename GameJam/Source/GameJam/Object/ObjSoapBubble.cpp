@@ -4,6 +4,7 @@
 #include "ObjSoapBubble.h"
 
 #include "Components/AudioComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 #include "GameJam/GameJamGameMode.h"
 #include "GameJam/Managers/ResourceManager.h"
 #include "Kismet/GameplayStatics.h"
@@ -18,7 +19,11 @@ AObjSoapBubble::AObjSoapBubble()
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SphereMesh"));
 	PoolableComponent = CreateDefaultSubobject<UPoolable>(TEXT("Poolable"));
 	AudioComponent = CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
-	
+
+	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileComp"));
+	ProjectileMovement->ProjectileGravityScale = 0.0f;
+	ProjectileMovement->bInitialVelocityInLocalSpace = false;
+	ProjectileMovement->bIsHomingProjectile = true;
 	SetRootComponent(MeshComponent);
 	
 }
@@ -45,6 +50,31 @@ void AObjSoapBubble::Init(FVector start, FVector destination, float moveSpeed, f
 	_time = 0;
 }
 
+void AObjSoapBubble::Init(FVector start, TWeakObjectPtr<USceneComponent> target, float moveSpeed, float spawnTime)
+{
+	if(_spawnSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, _spawnSound, start, FRotator::ZeroRotator, 1, 1, 0);
+		UE_LOG(LogTemp, Log, TEXT("Spawn Sound"));
+	}
+	_init = true;
+	FVector dirVec = GetActorForwardVector();
+	FVector newPos = start + dirVec*200;
+	SetActorLocation(newPos);
+	ProjectileMovement->HomingTargetComponent = target;
+	ProjectileMovement->InitialSpeed = 400.0f;
+	ProjectileMovement->HomingAccelerationMagnitude = 200.0f;
+
+	dirVec = dirVec.GetSafeNormal();
+	ProjectileMovement->Velocity = dirVec * ProjectileMovement->InitialSpeed;
+	UE_LOG(LogTemp, Log, TEXT("ProjectileMovement->Velocity : %s"), *ProjectileMovement->Velocity.ToString());
+	
+	_destination = target->GetOwner()->GetActorLocation();
+	_moveSpeed = moveSpeed;
+	_spawnTime = spawnTime;
+	_time = 0;
+}
+
 
 // Called every frame
 void AObjSoapBubble:: Tick(float DeltaTime)
@@ -59,8 +89,8 @@ void AObjSoapBubble:: Tick(float DeltaTime)
 		SoapBubbleDestory();
 	}
 	
-	FVector NewLocation = FMath::VInterpConstantTo(GetActorLocation(), _destination, DeltaTime, _moveSpeed);
-	SetActorLocation(NewLocation);
+	/*FVector NewLocation = FMath::VInterpConstantTo(GetActorLocation(), _destination, DeltaTime, _moveSpeed);
+	SetActorLocation(NewLocation);*/
 
 }
 

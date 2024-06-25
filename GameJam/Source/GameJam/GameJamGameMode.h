@@ -27,6 +27,12 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Destination")
 	FVector Destination;
+
+	UPROPERTY(EditAnywhere, Category = "Destination")
+	TSubclassOf<AActor> ActorClass;
+	
+	UPROPERTY(EditAnywhere, Category = "Destination")
+	class AActor* DestinationActor;
 	
 	AGameJamGameMode();
 

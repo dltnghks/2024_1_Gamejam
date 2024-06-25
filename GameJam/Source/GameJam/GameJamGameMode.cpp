@@ -22,9 +22,7 @@ void AGameJamGameMode::BeginPlay()
 
 	PoolManager->Init(this);
 	ResourceManager->Init(this);
-
-	UE_LOG(LogTemp, Log, TEXT("GameMode BeginPlay"));
-	AObjSoapBubble* bubble = ResourceManager->Instantiate<AObjSoapBubble>(testClass);
-	bubble->Init(FVector(2400.000000f,1360.000000f,315.062601f), FVector::Zero());
-	UE_LOG(LogTemp, Log, TEXT("%s 생성 완료"), *bubble->GetName());
+	
+	DestinationActor = GetWorld()->SpawnActor<AActor>(ActorClass.Get());
+	DestinationActor->SetActorLocation(Destination);
 }

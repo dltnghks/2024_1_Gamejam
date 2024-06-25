@@ -25,6 +25,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class UAudioComponent* AudioComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
+	class UProjectileMovementComponent* ProjectileMovement;
 	
 	UPROPERTY()
 	AGameJamGameMode* _gameMode;
@@ -60,7 +63,8 @@ protected:
 
 public:
 	void Init(FVector start, FVector destination, float moveSpeed = 100.0f, float spawnTime = 5.0f);
-	
+	void Init(FVector start, TWeakObjectPtr<USceneComponent> target, float moveSpeed = 100.0f, float spawnTime = 5.0f);
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

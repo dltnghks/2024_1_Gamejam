@@ -33,11 +33,15 @@ public:
 	
 	UPROPERTY(EditAnywhere, Category = "Destination")
 	class AActor* DestinationActor;
+
+	UPROPERTY(BlueprintReadWrite)
+	float GameTime;
 	
 	AGameJamGameMode();
 
 protected:
 	virtual void BeginPlay() override;
+
 };
 
 

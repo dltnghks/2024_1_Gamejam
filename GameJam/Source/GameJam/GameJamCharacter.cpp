@@ -69,6 +69,8 @@ void AGameJamCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
+	AGameJamGameMode* gameMode = Cast<AGameJamGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	InGameUI->SetGameTime(FString::FromInt(gameMode->GameTime));
 	if (CurShockWaveCoolDown > 0)
 	{
 		CurShockWaveCoolDown -= DeltaSeconds;
@@ -227,6 +229,8 @@ void AGameJamCharacter::ExitWater()
 void AGameJamCharacter::AddScore()
 {
 	InGameUI->SetScore(FString::FromInt(++Score));
+	AGameJamGameMode* gameMode = Cast<AGameJamGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	gameMode->GameTime += 5.0f;
 }
 
 void AGameJamCharacter::GetDamage()

@@ -15,6 +15,9 @@ class GAMEJAM_API UInGameUI : public UUserWidget
 	GENERATED_BODY()
 
 	UPROPERTY(meta=(BindWidget))
+	class UTextBlock* GameTime_Text;
+	
+	UPROPERTY(meta=(BindWidget))
 	class UTextBlock* CoolDown_Text;
 
 	UPROPERTY(meta=(BindWidget))
@@ -24,6 +27,7 @@ class GAMEJAM_API UInGameUI : public UUserWidget
 	class UTextBlock* Score_Text;
 	
 public:
+	void SetGameTime(FString GameTime);
 	void SetCoolDown(FString CoolDown);
 	void SetHP(FString HP);
 	void SetScore(FString Score);

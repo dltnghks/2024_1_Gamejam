@@ -5,6 +5,11 @@
 
 #include "Components/TextBlock.h"
 
+void UInGameUI::SetGameTime(FString GameTime)
+{
+	GameTime_Text->SetText(FText::FromString(GameTime));
+}
+
 void UInGameUI::SetCoolDown(FString CoolDown)
 {
 	CoolDown_Text->SetText(FText::FromString(CoolDown));
